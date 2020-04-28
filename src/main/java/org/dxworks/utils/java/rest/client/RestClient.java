@@ -10,19 +10,13 @@ public abstract class RestClient {
     @Delegate
     protected PathResolver pathResolver;
 
-    public RestClient() {
+    public RestClient(String apiBaseUrl) {
         this.httpClient = new HttpClient();
-        this.pathResolver = new PathResolver(getApiUrl());
+        this.pathResolver = new PathResolver(apiBaseUrl);
     }
 
-    public RestClient(HttpRequestInitializer httpRequestInitializer) {
+    public RestClient(String apiBaseUrl, HttpRequestInitializer httpRequestInitializer) {
         this.httpClient = new HttpClient(httpRequestInitializer);
-        this.pathResolver = new PathResolver(getApiUrl());
+        this.pathResolver = new PathResolver(apiBaseUrl);
     }
-
-    /**
-     * @return the base api url for the client.
-     */
-    protected abstract String getApiUrl();
-
 }

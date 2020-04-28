@@ -6,7 +6,7 @@
 
     <groupId>org.dxworks.utils</groupId>
     <artifactId>java-rest-client</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
 
     <licenses>
         <license>
