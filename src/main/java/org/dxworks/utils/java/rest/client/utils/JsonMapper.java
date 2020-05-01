@@ -3,9 +3,12 @@ package org.dxworks.utils.java.rest.client.utils;
 import com.google.api.client.json.JsonGenerator;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import lombok.SneakyThrows;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class JsonMapper {
 
@@ -16,7 +19,11 @@ public class JsonMapper {
     }
 
     public <T> T readJSONfromFile(File file, Class<T> type) throws IOException {
-        return new JsonObjectParser(jsonFactory).parseAndClose(new FileReader(file), type);
+        return readJSONfromFile(file, type, Charset.defaultCharset());
+    }
+
+    public <T> T readJSONfromFile(File file, Class<T> type, Charset encoding) throws IOException {
+        return new JsonObjectParser(jsonFactory).parseAndClose(getReader(file, encoding), type);
     }
 
     public <T> T readJSON(Reader reader, Class<T> type) throws IOException {
@@ -28,7 +35,15 @@ public class JsonMapper {
     }
 
     public Object readJSONfromFile(File file, Type type) throws IOException {
-        return new JsonObjectParser(jsonFactory).parseAndClose(new FileReader(file), type);
+        return readJSONfromFile(file, type, Charset.defaultCharset());
+    }
+
+    public Object readJSONfromFile(File file, Type type, Charset encoding) throws IOException {
+        return new JsonObjectParser(jsonFactory).parseAndClose(getReader(file, encoding), type);
+    }
+
+    private InputStreamReader getReader(File file, Charset encoding) throws FileNotFoundException {
+        return new InputStreamReader(new FileInputStream(file), encoding);
     }
 
     public Object readJSON(Reader reader, Type type) throws IOException {
@@ -58,5 +73,31 @@ public class JsonMapper {
         JsonGenerator generator = jsonFactory.createJsonGenerator(writer);
         generator.serialize(o);
         generator.flush();
+    }
+
+    public void writePrettyJSONtoFile(File file, Object o) throws IOException {
+        writePrettyJSONtoFile(file, o, Charset.defaultCharset());
+    }
+
+    public void writePrettyJSONtoFile(File file, Object o, Charset encoding) throws IOException {
+        JsonGenerator generator = jsonFactory.createJsonGenerator(getWriter(file));
+        generator.enablePrettyPrint();
+        generator.serialize(o);
+        generator.flush();
+    }
+
+    public void writeJSONtoFile(File file, Object o) throws IOException {
+        writeJSONtoFile(file, o, Charset.defaultCharset());
+    }
+
+    public void writeJSONtoFile(File file, Object o, Charset encoding) throws IOException {
+        JsonGenerator generator = jsonFactory.createJsonGenerator(getWriter(file));
+        generator.serialize(o);
+        generator.flush();
+    }
+
+    @SneakyThrows
+    private Writer getWriter(File file) {
+        return new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
     }
 }
