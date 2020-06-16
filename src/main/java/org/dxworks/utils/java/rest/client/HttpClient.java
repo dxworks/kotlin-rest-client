@@ -9,6 +9,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+import org.dxworks.utils.java.rest.client.response.HttpResponse;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +25,7 @@ public class HttpClient {
         HttpRequestFactory requestFactory = getHttpRequestFactory();
 
         HttpRequest request = requestFactory.buildGetRequest(url);
-        return request.execute();
+        return new HttpResponse(request.execute());
     }
 
     @SneakyThrows
@@ -34,7 +35,7 @@ public class HttpClient {
         JsonHttpContent content = getJsonHttpContent(body);
 
         HttpRequest request = requestFactory.buildPatchRequest(url, content);
-        return request.execute();
+        return new HttpResponse(request.execute());
     }
 
     @SneakyThrows
@@ -49,7 +50,7 @@ public class HttpClient {
         JsonHttpContent content = getJsonHttpContent(body);
 
         HttpRequest request = requestFactory.buildPostRequest(url, content);
-        return request.execute();
+        return new HttpResponse(request.execute());
     }
 
     @SneakyThrows
@@ -60,7 +61,7 @@ public class HttpClient {
 
         HttpRequest request = requestFactory.buildPutRequest(url, content);
         request.setLoggingEnabled(true);
-        return request.execute();
+        return new HttpResponse(request.execute());
     }
 
     private JsonHttpContent getJsonHttpContent(Object body) {
