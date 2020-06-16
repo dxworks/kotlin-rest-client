@@ -19,4 +19,9 @@ public abstract class RestClient {
         this.httpClient = new HttpClient(httpRequestInitializer);
         this.pathResolver = new PathResolver(apiBaseUrl);
     }
+
+    public RestClient(String apiBaseUrl, HttpClient httpClient) {
+        this.httpClient = httpClient;
+        this.pathResolver = new PathResolver(apiBaseUrl);
+    }
 }
