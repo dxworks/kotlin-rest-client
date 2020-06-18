@@ -72,7 +72,7 @@
                 <repository>
                     <id>github</id>
                     <name>GitHub dxworks Apache Maven Packages</name>
-                    <url>https://maven.pkg.github.com/dxworks</url>
+                    <url>https://maven.pkg.github.com/dxworks/java-rest-client</url>
                 </repository>
                 <snapshotRepository>
                     <id>github</id>

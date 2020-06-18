@@ -1,13 +1,13 @@
-name: Release
+name: Deploy
 
-# Run workflow on commits to the `master` branch
+# Run deployment to Github packages on commits to the `master` branch
 on:
   push:
     branches:
       - master
 
 jobs:
-  release:
+  deploy:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
