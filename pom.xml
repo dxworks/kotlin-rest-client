@@ -25,19 +25,6 @@
         </developer>
     </developers>
 
-    <distributionManagement>
-        <repository>
-            <id>marios-nexus</id>
-            <name>maven-releases</name>
-            <url>http://89.39.83.106:8081/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>marios-nexus</id>
-            <name>maven-snapshots</name>
-            <url>http://89.39.83.106:8081/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <build>
         <plugins>
             <plugin>
@@ -74,5 +61,41 @@
             <version>1.18.12</version>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>github-default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>GitHub dxworks Apache Maven Packages</name>
+                    <url>https://maven.pkg.github.com/dxworks</url>
+                </repository>
+                <snapshotRepository>
+                    <id>github</id>
+                    <name>GitHub dxworks Apache Maven Packages</name>
+                    <url>https://maven.pkg.github.com/dxworks</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>my-nexus-deploy</id>
+            <distributionManagement>
+                <repository>
+                    <id>marios-nexus</id>
+                    <name>maven-releases</name>
+                    <url>http://89.39.83.106:8081/repository/maven-releases/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>marios-nexus</id>
+                    <name>maven-snapshots</name>
+                    <url>http://89.39.83.106:8081/repository/maven-snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 
 </project>
