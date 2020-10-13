@@ -9,7 +9,7 @@ import com.google.api.client.json.jackson2.JacksonFactory
 import org.dxworks.utils.java.rest.client.providers.CompositeHttpRequestInitializer
 import org.dxworks.utils.java.rest.client.response.HttpResponse
 
-class HttpClient(private val httpRequestInitializer: HttpRequestInitializer? = null) {
+open class HttpClient(private val httpRequestInitializer: HttpRequestInitializer? = null) {
 
     fun get(url: GenericUrl, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
         val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))

@@ -7,7 +7,7 @@ import java.io.OutputStream
 import java.lang.reflect.Type
 import java.nio.charset.Charset
 
-class HttpResponse(private val response: HttpResponse) {
+open class HttpResponse(private val response: HttpResponse) {
     val contentLoggingLimit: Int
         get() = response.contentLoggingLimit
 

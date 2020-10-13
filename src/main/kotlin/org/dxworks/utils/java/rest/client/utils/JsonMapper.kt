@@ -6,7 +6,7 @@ import java.io.*
 import java.lang.reflect.Type
 import java.nio.charset.Charset
 
-class JsonMapper {
+open class JsonMapper {
     private val jsonFactory = JacksonFactory()
 
     fun <T> readJSON(jsonString: String, type: Class<T>): T {
