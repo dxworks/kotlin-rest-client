@@ -16,15 +16,15 @@ abstract class RestClient private constructor(private val pathResolver: PathReso
     constructor(apiBaseUrl: String, httpClient: HttpClient)
             : this(PathResolver(apiBaseUrl), httpClient)
 
-    fun getApiPath(variableValues: Map<String, String>, vararg pathVariables: String): String {
+    open fun getApiPath(variableValues: Map<String, String>, vararg pathVariables: String): String {
         return pathResolver.getApiPath(variableValues, *pathVariables)
     }
 
-    fun replacePlaceholders(v: String, variablesValues: Map<String, String>): String {
+    open fun replacePlaceholders(v: String, variablesValues: Map<String, String>): String {
         return pathResolver.replacePlaceholders(v, variablesValues)
     }
 
-    fun getApiPath(vararg pathVariables: String): String {
+    open fun getApiPath(vararg pathVariables: String): String {
         return pathResolver.getApiPath(*pathVariables)
     }
 }
