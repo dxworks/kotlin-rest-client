@@ -1,82 +1,59 @@
-package org.dxworks.utils.java.rest.client;
+package org.dxworks.utils.java.rest.client
 
-import com.google.api.client.http.*;
-import com.google.api.client.http.apache.v2.ApacheHttpTransport;
-import com.google.api.client.http.json.JsonHttpContent;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.JsonObjectParser;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
-import org.dxworks.utils.java.rest.client.response.HttpResponse;
+import com.google.api.client.http.*
+import com.google.api.client.http.apache.v2.ApacheHttpTransport
+import com.google.api.client.http.json.JsonHttpContent
+import com.google.api.client.json.JsonFactory
+import com.google.api.client.json.JsonObjectParser
+import com.google.api.client.json.jackson2.JacksonFactory
+import org.dxworks.utils.java.rest.client.providers.CompositeHttpRequestInitializer
+import org.dxworks.utils.java.rest.client.response.HttpResponse
 
-@AllArgsConstructor
-@NoArgsConstructor
-public class HttpClient {
+class HttpClient(private val httpRequestInitializer: HttpRequestInitializer? = null) {
 
-    private static HttpTransport HTTP_TRANSPORT = new ApacheHttpTransport();
-    private static JsonFactory JSON_FACTORY = new JacksonFactory();
-
-    private HttpRequestInitializer httpRequestInitializer;
-
-    @SneakyThrows
-    public HttpResponse get(GenericUrl url) {
-        HttpRequestFactory requestFactory = getHttpRequestFactory();
-
-        HttpRequest request = requestFactory.buildGetRequest(url);
-        return new HttpResponse(request.execute());
+    fun get(url: GenericUrl, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
+        val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
+        val request = requestFactory.buildGetRequest(url)
+        return HttpResponse(request.execute())
     }
 
-    @SneakyThrows
-    public HttpResponse patch(GenericUrl url, Object body) {
-        HttpRequestFactory requestFactory = getHttpRequestFactory();
-
-        JsonHttpContent content = getJsonHttpContent(body);
-
-        HttpRequest request = requestFactory.buildPatchRequest(url, content);
-        return new HttpResponse(request.execute());
+    fun patch(url: GenericUrl, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
+        val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
+        val content = getJsonHttpContent(body)
+        val request = requestFactory.buildPatchRequest(url, content)
+        return HttpResponse(request.execute())
     }
 
-    @SneakyThrows
-    public HttpResponse post(GenericUrl url) {
-        return post(url, null);
+    fun post(url: GenericUrl, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
+        val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
+        val content = getJsonHttpContent(body)
+        val request = requestFactory.buildPostRequest(url, content)
+        return HttpResponse(request.execute())
     }
 
-    @SneakyThrows
-    public HttpResponse post(GenericUrl url, Object body) {
-        HttpRequestFactory requestFactory = getHttpRequestFactory();
-
-        JsonHttpContent content = getJsonHttpContent(body);
-
-        HttpRequest request = requestFactory.buildPostRequest(url, content);
-        return new HttpResponse(request.execute());
+    fun put(url: GenericUrl?, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
+        val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
+        val content = getJsonHttpContent(body)
+        val request = requestFactory.buildPutRequest(url, content)
+        request.isLoggingEnabled = true
+        return HttpResponse(request.execute())
     }
 
-    @SneakyThrows
-    public HttpResponse put(GenericUrl url, Object body) {
-        HttpRequestFactory requestFactory = getHttpRequestFactory();
-
-        JsonHttpContent content = getJsonHttpContent(body);
-
-        HttpRequest request = requestFactory.buildPutRequest(url, content);
-        request.setLoggingEnabled(true);
-        return new HttpResponse(request.execute());
+    private fun getJsonHttpContent(body: Any?): JsonHttpContent? {
+        var content: JsonHttpContent? = null
+        if (body != null) content = JsonHttpContent(JacksonFactory(), body)
+        return content
     }
 
-    private JsonHttpContent getJsonHttpContent(Object body) {
-        JsonHttpContent content = null;
-        if (body != null)
-            content = new JsonHttpContent(new JacksonFactory(), body);
-        return content;
+    private fun getHttpRequestFactory(httpRequestInitializer: HttpRequestInitializer?): HttpRequestFactory {
+        return HTTP_TRANSPORT.createRequestFactory { request: HttpRequest ->
+            request.parser = JsonObjectParser(JSON_FACTORY)
+            httpRequestInitializer?.initialize(request)
+        }
     }
 
-    private HttpRequestFactory getHttpRequestFactory() {
-        return HTTP_TRANSPORT.createRequestFactory(
-                (HttpRequest request) -> {
-                    request.setParser(new JsonObjectParser(JSON_FACTORY));
-                    if (httpRequestInitializer != null)
-                        httpRequestInitializer.initialize(request);
-                });
+    companion object {
+        private val HTTP_TRANSPORT: HttpTransport = ApacheHttpTransport()
+        private val JSON_FACTORY: JsonFactory = JacksonFactory()
     }
 }
