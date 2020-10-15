@@ -11,27 +11,27 @@ import org.dxworks.utils.java.rest.client.response.HttpResponse
 
 open class HttpClient(private val httpRequestInitializer: HttpRequestInitializer? = null) {
 
-    fun get(url: GenericUrl, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
+    open fun get(url: GenericUrl, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
         val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
         val request = requestFactory.buildGetRequest(url)
         return HttpResponse(request.execute())
     }
 
-    fun patch(url: GenericUrl, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
+    open fun patch(url: GenericUrl, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
         val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
         val content = getJsonHttpContent(body)
         val request = requestFactory.buildPatchRequest(url, content)
         return HttpResponse(request.execute())
     }
 
-    fun post(url: GenericUrl, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
+    open fun post(url: GenericUrl, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
         val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
         val content = getJsonHttpContent(body)
         val request = requestFactory.buildPostRequest(url, content)
         return HttpResponse(request.execute())
     }
 
-    fun put(url: GenericUrl?, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
+    open fun put(url: GenericUrl?, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
         val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
         val content = getJsonHttpContent(body)
         val request = requestFactory.buildPutRequest(url, content)
