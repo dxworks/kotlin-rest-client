@@ -17,6 +17,10 @@ open class HttpClient(private val httpRequestInitializer: HttpRequestInitializer
         return HttpResponse(request.execute())
     }
 
+    open fun <T> getAndProcess(url: GenericUrl, customRequestInitializer: HttpRequestInitializer? = null, processor: (HttpResponse) -> T): T {
+        return processor(get(url, customRequestInitializer))
+    }
+
     open fun patch(url: GenericUrl, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
         val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
         val content = getJsonHttpContent(body)

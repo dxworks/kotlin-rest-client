@@ -2,12 +2,22 @@ package org.dxworks.utils.java.rest.client.response
 
 import com.google.api.client.http.*
 import com.google.api.client.http.HttpResponse
+import com.google.api.client.util.IOUtils
+import org.dxworks.utils.java.rest.client.utils.JsonMapper
 import java.io.InputStream
 import java.io.OutputStream
 import java.lang.reflect.Type
 import java.nio.charset.Charset
 
+/**
+ * A wrapper for the com.google.api.client.http.HttpResponse class
+ *
+ * This is built with the intent to let REST API Client Developers to extend the response with fields and methods.
+ */
 open class HttpResponse(val response: HttpResponse) {
+
+    private val contentString: String = response.parseAsString()
+
     val contentLoggingLimit: Int
         get() = response.contentLoggingLimit
 
@@ -50,30 +60,29 @@ open class HttpResponse(val response: HttpResponse) {
         get() = response.request
 
     val content: InputStream
-        get() = response.content
+        get() = contentString.byteInputStream()
 
     fun download(outputStream: OutputStream?) {
-        response.download(outputStream)
+        IOUtils.copy(contentString.byteInputStream(), outputStream)
     }
 
     fun ignore() {
-        response.ignore()
     }
 
     fun disconnect() {
         response.disconnect()
     }
 
-    fun <T> parseAs(dataClass: Class<T>?): T {
-        return response.parseAs(dataClass)
+    fun <T> parseAs(dataClass: Class<T>): T {
+        return JsonMapper().readJSON(contentString, dataClass)
     }
 
-    fun parseAs(dataType: Type?): Any {
-        return response.parseAs(dataType)
+    fun parseAs(dataType: Type): Any {
+        return JsonMapper().readJSON(contentString, dataType)
     }
 
     fun parseAsString(): String {
-        return response.parseAsString()
+        return contentString
     }
 
     val contentCharset: Charset
