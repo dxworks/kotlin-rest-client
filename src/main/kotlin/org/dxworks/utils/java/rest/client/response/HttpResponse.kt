@@ -16,7 +16,7 @@ import java.nio.charset.Charset
  */
 open class HttpResponse(val response: HttpResponse) {
 
-    private val contentString: String = readContentString()
+    private val contentString: String by lazy { readContentString() }
 
     protected open fun readContentString(): String = response.parseAsString()
 
