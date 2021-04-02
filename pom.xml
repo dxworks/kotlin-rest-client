@@ -6,7 +6,7 @@
 
     <groupId>org.dxworks.utils</groupId>
     <artifactId>kotlin-rest-client</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>Kotlin Rest Client</name>
     <description>A starter library for building Rest API clients built on top of the Google Java Http Client
@@ -117,9 +117,6 @@
     <profiles>
         <profile>
             <id>deployToCentral</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
             <build>
                 <plugins>
                     <plugin>
