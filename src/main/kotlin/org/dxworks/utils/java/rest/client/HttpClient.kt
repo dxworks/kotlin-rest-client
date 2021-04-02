@@ -12,31 +12,51 @@ import org.dxworks.utils.java.rest.client.response.HttpResponse
 open class HttpClient(private val httpRequestInitializer: HttpRequestInitializer? = null) {
 
     open fun get(url: GenericUrl, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
-        val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
+        val requestFactory =
+            getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
         val request = requestFactory.buildGetRequest(url)
         return HttpResponse(request.execute())
     }
 
-    open fun <T> getAndProcess(url: GenericUrl, customRequestInitializer: HttpRequestInitializer? = null, processor: (HttpResponse) -> T): T {
+    open fun <T> getAndProcess(
+        url: GenericUrl,
+        customRequestInitializer: HttpRequestInitializer? = null,
+        processor: (HttpResponse) -> T
+    ): T {
         return processor(get(url, customRequestInitializer))
     }
 
-    open fun patch(url: GenericUrl, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
-        val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
+    open fun patch(
+        url: GenericUrl,
+        body: Any? = null,
+        customRequestInitializer: HttpRequestInitializer? = null
+    ): HttpResponse {
+        val requestFactory =
+            getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
         val content = getJsonHttpContent(body)
         val request = requestFactory.buildPatchRequest(url, content)
         return HttpResponse(request.execute())
     }
 
-    open fun post(url: GenericUrl, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
-        val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
+    open fun post(
+        url: GenericUrl,
+        body: Any? = null,
+        customRequestInitializer: HttpRequestInitializer? = null
+    ): HttpResponse {
+        val requestFactory =
+            getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
         val content = getJsonHttpContent(body)
         val request = requestFactory.buildPostRequest(url, content)
         return HttpResponse(request.execute())
     }
 
-    open fun put(url: GenericUrl?, body: Any? = null, customRequestInitializer: HttpRequestInitializer? = null): HttpResponse {
-        val requestFactory = getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
+    open fun put(
+        url: GenericUrl?,
+        body: Any? = null,
+        customRequestInitializer: HttpRequestInitializer? = null
+    ): HttpResponse {
+        val requestFactory =
+            getHttpRequestFactory(CompositeHttpRequestInitializer(httpRequestInitializer, customRequestInitializer))
         val content = getJsonHttpContent(body)
         val request = requestFactory.buildPutRequest(url, content)
         request.isLoggingEnabled = true

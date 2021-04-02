@@ -8,8 +8,8 @@ import java.util.stream.Stream
 open class PathResolver(private val apiUrl: String) {
     fun getApiPath(variableValues: Map<String, String>, vararg pathVariables: String): String {
         return Stream.concat(Stream.of(apiUrl),
-                Arrays.stream(pathVariables).map { v: String -> replacePlaceholders(v, variableValues) })
-                .collect(Collectors.joining("/"))
+            Arrays.stream(pathVariables).map { v: String -> replacePlaceholders(v, variableValues) })
+            .collect(Collectors.joining("/"))
     }
 
     @VisibleForTesting

@@ -4,7 +4,8 @@ import com.google.api.client.http.HttpRequest
 import com.google.api.client.http.HttpRequestInitializer
 
 open class CompositeHttpRequestInitializer(
-        vararg initializers: HttpRequestInitializer?) : HttpRequestInitializer {
+    vararg initializers: HttpRequestInitializer?
+) : HttpRequestInitializer {
 
     private val initializersList: List<HttpRequestInitializer> = initializers.filterNotNull()
 

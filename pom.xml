@@ -91,6 +91,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <sourceFileIncludes>
+                        <sourceFileInclude>Readme.md</sourceFileInclude>
+                    </sourceFileIncludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
