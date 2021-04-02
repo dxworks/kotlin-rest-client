@@ -3,8 +3,8 @@ name: Deploy
 # Run deployment to Github packages on commits to the `release` branches
 on:
   push:
-    branches:
-      - release/**
+    tags:
+      - v*
 
 jobs:
   deploy:
