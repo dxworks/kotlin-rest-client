@@ -5,14 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.dxworks.utils</groupId>
-    <artifactId>java-rest-client</artifactId>
-    <version>2.1.0-SNAPSHOT</version>
+    <artifactId>kotlin-rest-client</artifactId>
+    <version>1.0.0</version>
+
+    <name>Kotlin Rest Client</name>
+    <description>A starter library for building Rest API clients built on top of the Google Java Http Client
+    </description>
+    <url>https://dxworks.github.io</url>
 
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
             <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>manual</distribution>
         </license>
     </licenses>
 
@@ -24,6 +28,12 @@
             <name>Darius Nagy</name>
         </developer>
     </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/dxworks/kotlin-rest-client.git</connection>
+        <developerConnection>scm:git:ssh://github.com:dxworks/kotlin-rest-client.git</developerConnection>
+        <url>https://github.com/dxworks/kotlin-rest-client</url>
+    </scm>
 
     <properties>
         <kotlin.version>1.4.31</kotlin.version>
@@ -55,6 +65,32 @@
                 <configuration>
                     <jvmTarget>1.8</jvmTarget>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
