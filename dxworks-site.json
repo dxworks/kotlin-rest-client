@@ -1,0 +1,16 @@
+{
+  "displayName": "Kotlin Rest Client",
+  "relevance": 2,
+  "categories": ["library"],
+  "codeOwners": [
+    {
+      "name": "Mario Rivis"
+    },
+    {
+      "name": "Darius Nagy"
+    }
+  ],
+  "technologies": ["kotlin", "maven"],
+  "version": "1.0.0",
+  "docs": "https://dxworks.github.io/kotlin-rest-client"
+}
