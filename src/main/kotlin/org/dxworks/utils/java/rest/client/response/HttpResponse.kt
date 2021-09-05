@@ -62,7 +62,7 @@ open class HttpResponse(val response: HttpResponse) {
         get() = response.request
 
     val content: InputStream
-        get() = contentString.byteInputStream()
+        get() = contentString.byteInputStream(contentCharset)
 
     fun download(outputStream: OutputStream?) {
         IOUtils.copy(contentString.byteInputStream(), outputStream)
